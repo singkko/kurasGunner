@@ -61,28 +61,42 @@ public class WeaponAim : MonoBehaviour
 
     void AimWeapon()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0;
+        Vector3 mouseScreenPos = Input.mousePosition;
 
-        Vector2 direction = (Vector2)mousePosition - (Vector2)weaponSpriteTransform.position;
+        // Set the correct z-distance from the camera to your weapon
+        mouseScreenPos.z = Mathf.Abs(Camera.main.transform.position.z - weaponSpriteTransform.position.z);
+
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        mouseWorldPos.z = 0f;
+
+        Vector2 direction = (Vector2)(mouseWorldPos - weaponSpriteTransform.position);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
         weaponSpriteTransform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     void FlipWeapon()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        bool isLeft = mousePosition.x < playerTransform.position.x;
+        Vector3 mouseScreenPos = Input.mousePosition;
+
+        // Ensure correct Z-depth for ScreenToWorldPoint (commonly 10 units ahead of camera)
+        mouseScreenPos.z = Mathf.Abs(Camera.main.transform.position.z);
+
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        bool isLeft = mouseWorldPos.x < playerTransform.position.x;
 
         weaponSprite.flipY = isLeft;
         weaponHolderTransform.localScale = new Vector3(isLeft ? -1 : 1, 1, 1);
         playerTransform.localScale = new Vector3(isLeft ? -1 : 1, 1, 1);
     }
 
+
     void Shoot()
     {
         if (currentAmmo <= 0 || isReloading)
             return;
+
+        CameraShake.Instance.Shake(3f, 0.2f);
 
         float bulletSpreadAngle = 3f;
         int bulletCount = 3;
@@ -112,6 +126,8 @@ public class WeaponAim : MonoBehaviour
 
         while (Input.GetMouseButton(1) && currentAmmo > 0 && !isReloading) // Fire continuously while right-click is held
         {
+            CameraShake.Instance.Shake(3f, 0.2f);
+
             FireSingleBullet(); // Fire a single bullet
             yield return new WaitForSeconds(rapidFireRate); // Wait for next shot
         }
