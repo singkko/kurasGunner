@@ -96,7 +96,7 @@ public class WeaponAim : MonoBehaviour
         if (currentAmmo <= 0 || isReloading)
             return;
 
-        CameraShake.Instance.Shake(3f, 0.2f);
+        CameraShake.Instance.Shake(2f, 0.2f);
 
         float bulletSpreadAngle = 3f;
         int bulletCount = 3;
@@ -126,7 +126,7 @@ public class WeaponAim : MonoBehaviour
 
         while (Input.GetMouseButton(1) && currentAmmo > 0 && !isReloading) // Fire continuously while right-click is held
         {
-            CameraShake.Instance.Shake(3f, 0.2f);
+            CameraShake.Instance.Shake(2f, 0.2f);
 
             FireSingleBullet(); // Fire a single bullet
             yield return new WaitForSeconds(rapidFireRate); // Wait for next shot

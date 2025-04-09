@@ -26,6 +26,8 @@ public class EnemyChase : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        if (player == null) return;
     }
 
     void Update()

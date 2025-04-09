@@ -12,6 +12,8 @@ public class CameraLookAhead : MonoBehaviour
 
     void Update()
     {
+        if (!player) return;
+
         Vector3 mouseScreenPos = Input.mousePosition;
 
         // Make sure to use correct depth (Z distance from camera to player or camera target)

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8379350806619707600}
   - component: {fileID: 6680166891520903588}
   - component: {fileID: -9015663937670574616}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EnemyaiChase
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -377,7 +377,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5095572078055548013}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: enemyshootpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

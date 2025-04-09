@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 533995076355790765}
   - component: {fileID: 2458661061918750513}
   - component: {fileID: 6695349001422114750}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Boss
   m_TagString: enemy
   m_Icon: {fileID: 0}
@@ -193,13 +193,7 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: c5efdc6a67df5594c94c9deffaf34a63, type: 3}
   jumpPadPrefab: {fileID: 1958699420485458048, guid: e723c6629b4e818489537be10883e64a, type: 3}
   jumpPadSpawnPosition: {x: 58.18, y: -8.02, z: 2.754084}
-  dashPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   dashSpeed: 10
-  dashCooldown: 5
-  dashDuration: 0.5
 --- !u!82 &6695349001422114750
 AudioSource:
   m_ObjectHideFlags: 0
