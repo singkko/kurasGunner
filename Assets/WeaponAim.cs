@@ -23,6 +23,10 @@ public class WeaponAim : MonoBehaviour
 
     public int maxAmmo = 8;
     private int currentAmmo;
+
+    public int maxRapidAmmo = 20;
+    private int currentRapidAmmo;
+
     private bool isReloading = false;
 
     public TextMeshProUGUI ammoText;  // UI Element for displaying ammo
@@ -31,41 +35,51 @@ public class WeaponAim : MonoBehaviour
     public float rapidFireRate = 0.2f; // Fire rate in seconds
     private bool isRapidFiring = false;
 
+    // Pump shotgun cooldown
+    public float pumpShotCooldown = 0.6f; // Cooldown between pump shots
+    private float lastShotTime = -Mathf.Infinity;
+
+    // Reference to the PauseMenu script
+    public PauseMenu pauseMenu;
+
     void Start()
     {
         weaponSprite = weaponSpriteTransform.GetComponent<SpriteRenderer>();
         currentAmmo = maxAmmo;
+        currentRapidAmmo = maxRapidAmmo;
         UpdateAmmoUI();
     }
 
     void Update()
     {
-        if (PauseManager.IsPaused || isReloading)
+        if (PauseMenu.isPaused)  // Or PauseMenu.IsPaused() if using a method
+            return;  // Don't allow shooting when paused
+
+        if (isReloading)
             return;
 
         AimWeapon();
         FlipWeapon();
 
-        if (Input.GetMouseButtonDown(0) && currentAmmo > 0) // Left click for normal shot
+        // Pump-action single shot (left click) with cooldown
+        if (Input.GetMouseButtonDown(0) && currentAmmo > 0 && Time.time - lastShotTime >= pumpShotCooldown)
             Shoot();
 
-        if (Input.GetMouseButton(1) && !isRapidFiring && currentAmmo > 0) // Right click for rapid fire
+        if (Input.GetMouseButton(1) && !isRapidFiring && currentRapidAmmo > 0)
             StartCoroutine(RapidFire());
 
-        if (Input.GetMouseButtonUp(1)) // Stop rapid fire when right click is released
+        if (Input.GetMouseButtonUp(1))
             isRapidFiring = false;
 
-        if (Input.GetKeyDown(KeyCode.R) && !isReloading) // Press 'R' to reload manually
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading)
             StartCoroutine(Reload());
     }
+
 
     void AimWeapon()
     {
         Vector3 mouseScreenPos = Input.mousePosition;
-
-        // Set the correct z-distance from the camera to your weapon
         mouseScreenPos.z = Mathf.Abs(Camera.main.transform.position.z - weaponSpriteTransform.position.z);
-
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
         mouseWorldPos.z = 0f;
 
@@ -78,8 +92,6 @@ public class WeaponAim : MonoBehaviour
     void FlipWeapon()
     {
         Vector3 mouseScreenPos = Input.mousePosition;
-
-        // Ensure correct Z-depth for ScreenToWorldPoint (commonly 10 units ahead of camera)
         mouseScreenPos.z = Mathf.Abs(Camera.main.transform.position.z);
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
@@ -89,7 +101,6 @@ public class WeaponAim : MonoBehaviour
         weaponHolderTransform.localScale = new Vector3(isLeft ? -1 : 1, 1, 1);
         playerTransform.localScale = new Vector3(isLeft ? -1 : 1, 1, 1);
     }
-
 
     void Shoot()
     {
@@ -102,6 +113,7 @@ public class WeaponAim : MonoBehaviour
         int bulletCount = 3;
         float minBulletSpeed = bulletSpeed * 0.8f;
         float maxBulletSpeed = bulletSpeed * 1.2f;
+
         audioSource.pitch = Random.Range(pitchMin, pitchMax);
         audioSource.volume = volume;
         audioSource.PlayOneShot(shootSound);
@@ -118,18 +130,18 @@ public class WeaponAim : MonoBehaviour
 
         currentAmmo--;
         UpdateAmmoUI();
+        lastShotTime = Time.time;
     }
 
     IEnumerator RapidFire()
     {
         isRapidFiring = true;
 
-        while (Input.GetMouseButton(1) && currentAmmo > 0 && !isReloading) // Fire continuously while right-click is held
+        while (Input.GetMouseButton(1) && currentRapidAmmo > 0 && !isReloading)
         {
             CameraShake.Instance.Shake(2f, 0.2f);
-
-            FireSingleBullet(); // Fire a single bullet
-            yield return new WaitForSeconds(rapidFireRate); // Wait for next shot
+            FireSingleBullet();
+            yield return new WaitForSeconds(rapidFireRate);
         }
 
         isRapidFiring = false;
@@ -137,7 +149,7 @@ public class WeaponAim : MonoBehaviour
 
     void FireSingleBullet()
     {
-        if (currentAmmo <= 0 || isReloading)
+        if (currentRapidAmmo <= 0 || isReloading)
             return;
 
         audioSource.pitch = Random.Range(pitchMin, pitchMax);
@@ -150,7 +162,7 @@ public class WeaponAim : MonoBehaviour
         bulletRb.velocity = bulletRotation * Vector2.right * bulletSpeed;
         Destroy(bullet, 0.3f);
 
-        currentAmmo--;
+        currentRapidAmmo--;
         UpdateAmmoUI();
     }
 
@@ -159,7 +171,6 @@ public class WeaponAim : MonoBehaviour
         isReloading = true;
         ammoText.text = "RELOADING...";
 
-        // Play reload sound
         if (reloadSound != null)
         {
             audioSource.PlayOneShot(reloadSound);
@@ -167,6 +178,7 @@ public class WeaponAim : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         currentAmmo = maxAmmo;
+        currentRapidAmmo = maxRapidAmmo;
         isReloading = false;
         UpdateAmmoUI();
     }
@@ -174,6 +186,6 @@ public class WeaponAim : MonoBehaviour
     void UpdateAmmoUI()
     {
         if (!isReloading)
-            ammoText.text = $"{currentAmmo}/{maxAmmo}";
+            ammoText.text = $"Pump: {currentAmmo}/{maxAmmo}  |  Rapid: {currentRapidAmmo}/{maxRapidAmmo}";
     }
 }

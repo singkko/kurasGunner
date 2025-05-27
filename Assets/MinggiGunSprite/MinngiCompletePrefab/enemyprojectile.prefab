@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 22.459124, y: 1.4866139, z: 0}
-  m_LocalScale: {x: 0.39012, y: 0.39012, z: 0.39012}
+  m_LocalScale: {x: 0.29701784, y: 0.29701784, z: 0.29701784}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -214,8 +214,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.099363
-        value: 0.48012376
+        time: 0.03905645
+        value: 0.30996537
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -223,21 +223,21 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.32782766
-        value: 0.011230469
-        inSlope: 0
-        outSlope: 0
+        time: 1
+        value: 0.027267903
+        inSlope: 0.16415273
+        outSlope: 0.16415273
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.165073
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.8962264, g: 0.20714669, b: 0.4155143, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 0}
+      key0: {r: 1, g: 0, b: 0.30113602, a: 1}
+      key1: {r: 0.9261811, g: 1, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

@@ -15,8 +15,8 @@ public class DynamicBGMManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         baseBGM.volume = 1f;
         enemyBGM.volume = 0f;
-        enemyBGM.Play(); // Preload
-        enemyBGM.Pause(); // Don't start yet
+        enemyBGM.Play();
+        enemyBGM.Pause();
     }
 
     void Update()
@@ -36,18 +36,15 @@ public class DynamicBGMManager : MonoBehaviour
 
         if (enemyNearby && !wasEnemyNearby)
         {
-            // Combat starts
-            baseBGM.volume = 0f; // Instantly mute base BGM
+            baseBGM.volume = 0f;
             enemyBGM.Stop();
             enemyBGM.Play();
         }
         else if (!enemyNearby && wasEnemyNearby)
         {
-            // Combat ends
             enemyBGM.Pause();
         }
 
-        // Volume transitions
         if (enemyNearby)
         {
             enemyBGM.volume = Mathf.MoveTowards(enemyBGM.volume, 1f, fadeSpeed * Time.deltaTime);
@@ -59,5 +56,18 @@ public class DynamicBGMManager : MonoBehaviour
         }
 
         wasEnemyNearby = enemyNearby;
+    }
+
+    public void StopAllMusic()
+    {
+        if (baseBGM != null)
+        {
+            baseBGM.Stop();
+        }
+
+        if (enemyBGM != null)
+        {
+            enemyBGM.Stop();
+        }
     }
 }

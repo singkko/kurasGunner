@@ -1,17 +1,17 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenuUI; // Assign your UI canvas or background sprite here
-    public float normalTimeScale = 1f; // Normal time scale (1 is default)
-    public float pausedTimeScale = 0f; // Paused time scale (0 stops time)
+    public GameObject pausePanel;     // The Pause menu panel
+    public GameObject playerObject;   // Drag your Player GameObject here
+    public static bool isPaused = false;
 
     void Update()
     {
-        // Check if ESC is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (PauseManager.IsPaused)
+            if (isPaused)
             {
                 ResumeGame();
             }
@@ -22,17 +22,41 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    public void ResumeGame()
+    public void PauseGame()
     {
-        pauseMenuUI.SetActive(false);         // Hide the pause menu
-        Time.timeScale = normalTimeScale;     // Return to normal time
-        PauseManager.SetPause(false);         // Resume the game (unpause state)
+        isPaused = true;
+        pausePanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 
-    void PauseGame()
+    public void ResumeGame()
     {
-        pauseMenuUI.SetActive(true);          // Show the pause menu
-        Time.timeScale = pausedTimeScale;     // Freeze time
-        PauseManager.SetPause(true);          // Pause the game (pause state)
+        isPaused = false;
+        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+
+        if (playerObject != null)
+        {
+            Destroy(playerObject); // Destroy assigned player GameObject
+        }
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+
+        if (playerObject != null)
+        {
+            Destroy(playerObject); // Destroy assigned player GameObject
+        }
+
+        SceneManager.LoadScene(0);
     }
 }

@@ -6,6 +6,8 @@ public class PlayerRecoil : MonoBehaviour
     public float normalTimeScale = 1f;      // Normal game speed
     private Rigidbody2D rb;
 
+    private bool isPaused = false;  // Track the pause state
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();   // Get the Rigidbody2D attached to the player
@@ -15,7 +17,7 @@ public class PlayerRecoil : MonoBehaviour
     void Update()
     {
         // Do nothing if the game is paused
-        if (PauseManager.IsPaused)
+        if (isPaused)
         {
             return;
         }
@@ -37,5 +39,11 @@ public class PlayerRecoil : MonoBehaviour
         {
             Destroy(collision.gameObject);  // Destroy the object upon collision
         }
+    }
+
+    // You can call this method to pause or resume the game manually from other scripts
+    public void SetPauseState(bool pause)
+    {
+        isPaused = pause;
     }
 }

@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 2331629395831124140}
   - component: {fileID: 6960290012926622528}
   - component: {fileID: 5076453630482902492}
-  - component: {fileID: 2032205042750490053}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -221,6 +220,7 @@ MonoBehaviour:
   jumpCooldown: 0.7
   inertia: 0.1
   fallMultiplier: 2.5
+  jumpSound: {fileID: 0}
 --- !u!114 &5076453630482902492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,21 +233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad2698cc0a46916498d777f54214402e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2032205042750490053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2787946152126282632}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa64049e7d84ccc4f9fa538adfbe9c25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashSpeed: 20
-  dashDuration: 0.5
-  dashCooldown: 0
 --- !u!1 &6111884505370786765
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,12 +456,14 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 4898967376848361420}
   bulletSpeed: 30
   shootSound: {fileID: 8300000, guid: 1f5bb74b47099f14b89179ff300cc76d, type: 3}
+  reloadSound: {fileID: 0}
   audioSource: {fileID: 0}
   pitchMin: 0.8
   pitchMax: 1.2
   volume: 0.8
   maxAmmo: 8
   ammoText: {fileID: 0}
+  rapidFireRate: 0.2
 --- !u!212 &7569136377597961970
 SpriteRenderer:
   m_ObjectHideFlags: 0

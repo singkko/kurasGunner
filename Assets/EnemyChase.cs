@@ -5,8 +5,8 @@ public class EnemyChase : MonoBehaviour
     public float speed = 2f;
     public float chaseRange = 5f;
     public int hp = 10;
-    public float knockbackForce = 5f; // Knockback strength
-    public float knockbackDuration = 0.2f; // Time before enemy can move again
+    public float knockbackForce = 5f;
+    public float knockbackDuration = 0.2f;
 
     public AudioClip hitSound;
     public AudioClip deathSound;
@@ -17,7 +17,7 @@ public class EnemyChase : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private bool isDying = false;
-    private bool isKnockedBack = false; // Prevents movement during knockback
+    private bool isKnockedBack = false;
 
     void Start()
     {
@@ -64,10 +64,12 @@ public class EnemyChase : MonoBehaviour
             if (hp <= 0)
             {
                 Die();
+                GameManager.Instance.AddScore(100); // Add score when the enemy dies
             }
             else
             {
                 ApplyKnockback(collision.transform.position);
+                GameManager.Instance.IncreaseComboMultiplier(); // Increase combo multiplier if enemy is damaged
             }
 
             Destroy(collision.gameObject);
@@ -132,6 +134,8 @@ public class EnemyChase : MonoBehaviour
 
         // Destroy the game object after delay
         Destroy(gameObject, 1f);
-    }
 
+        // Reset combo multiplier after enemy dies
+        GameManager.Instance.ResetComboMultiplier();
+    }
 }
